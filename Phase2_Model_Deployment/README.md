@@ -1,18 +1,28 @@
 # Phase 2: Model Deployment Using Kubernetes
 
 ## Objective
-Deploy the selected model using Docker and Kubernetes for real-time traffic prediction.
+Deploy the traffic prediction model as a scalable service using Docker and Kubernetes, with a RESTful API for predictions.
 
-### Tasks
-- **Model Packaging**: Containerize the model using Docker.
-- **Deployment**: Deploy the model using Kubernetes for scalability and reliability.
+### Key Components
+- **Dockerfile**: Defines the environment and dependencies for the application.
+- **Kubernetes Deployment**: Specifies the configuration for deploying the model on a Kubernetes cluster.
+- **Flask API**: Provides an endpoint for making traffic predictions using the trained model.
+
+### Deployment Steps
+1. **Docker**: 
+   - Build the Docker image using the provided `Dockerfile`.
+   - Run: `docker build -t mtbogush/model-api:latest .`
+   - Push the image to DockerHub: `docker push mtbogush/model-api:latest`
+
+2. **Kubernetes**:
+   - Deploy the service with `traffic-prediction-deployment.yaml`.
+   - Use: `kubectl apply -f traffic-prediction-deployment.yaml` to deploy.
 
 ### Deliverables
-- `Dockerfile`: Dockerfile for building the model container.
-- `kubernetes_deployment_files.zip`: YAML configuration files for Kubernetes deployment.
-- `docker_image_link.txt`: Link to the DockerHub repository.
-- `api_documentation.pdf`: Documentation for the RESTful API.
+- `Dockerfile`: Configuration for building the model's Docker image.
+- `traffic-prediction-deployment.yaml`: YAML file for Kubernetes deployment.
+- `api_documentation.pdf`: Documentation for interacting with the model's API.
+- `docker_image_link.txt`: Contains the link to the DockerHub image.
 
-### Deployment Instructions
-1. Build the Docker image using the provided Dockerfile.
-2. Deploy the model on Kubernetes using the configuration files in `kubernetes_deployment_files.zip`.
+### API Endpoint
+- **POST /predict**: Accepts JSON input and returns the traffic prediction.
