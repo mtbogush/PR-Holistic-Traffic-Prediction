@@ -1,53 +1,64 @@
 # Phase 1: Model Experimentation Using Kubeflow
 
 ## Objective
-This phase involves experimenting with the Linear Regression model using the METR-LA dataset. The primary goal is to build enhanced time-series features, train the model, and evaluate its performance on traffic flow prediction. The experiment is tracked using Kubeflow.
+This phase focuses on experimenting with LSTM and GRU models for time-series forecasting using the METR-LA dataset. The experiment includes data preprocessing, sequence creation, model training, evaluation, and tracking with MLflow.
 
 ### Tasks
-- **Data Preprocessing**: Load and preprocess the data by creating time-based and lagged features.
-- **Model Training**: Train a Linear Regression model using the preprocessed features.
-- **Model Evaluation**: Evaluate the model's performance using metrics like MAE (Mean Absolute Error) and RMSE (Root Mean Squared Error).
-- **Visualization**: Plot the actual vs. predicted traffic flow for each sensor location.
+- **Data Loading**: Load the METR-LA dataset using the `h5py` library.
+- **Data Preprocessing**: Normalize the data using `MinMaxScaler`.
+- **Sequence Creation**: Generate sequences for time-series forecasting.
+- **Model Building**: Implement LSTM and GRU models using TensorFlow and Keras.
+- **Model Evaluation**: Evaluate model performance using metrics such as MAE (Mean Absolute Error), MSE (Mean Squared Error), and R² Score.
+- **Logging and Tracking**: Log training metrics and artifacts using MLflow for experiment tracking.
 
 ### Code Overview
 
 #### Libraries Used
-- `pandas` and `numpy`: For data manipulation and analysis.
-- `pickle`: To load pre-processed traffic flow data.
-- `matplotlib`: For plotting the results.
-- `sklearn.linear_model`: For the Linear Regression model.
-- `sklearn.metrics`: For evaluation metrics like MAE and RMSE.
+- `numpy` and `pandas`: For data manipulation and numerical operations.
+- `scikit-learn`: For scaling data and evaluation metrics.
+- `h5py`: For handling the METR-LA dataset.
+- `tensorflow.keras`: For building LSTM and GRU models.
+- `mlflow`: For tracking model training, parameters, and metrics.
+- `logging`: For logging training details to a file.
 
 #### Data Loading
-The data is loaded from a pickle file containing pre-processed traffic flow data for multiple sensor locations.
+The code loads the METR-LA dataset using the `h5py` library, converts it into a DataFrame, and prepares it for further preprocessing.
 
-#### Feature Engineering
-The code creates several enhanced features for each sensor location, including:
-- **Time-based features**: Hour of the day, day of the week, and weekend indicator.
-- **Lagged features**: Traffic flow values lagged by 1, 2, and 3 intervals.
-- **Rolling and Exponential Moving Averages**: Smoothing techniques to capture trends.
+#### Data Preprocessing
+- **Min-Max Normalization**: The data is scaled using `MinMaxScaler` to ensure that all features have values between 0 and 1.
+
+#### Model Architecture
+- **LSTM Model**: Composed of two LSTM layers followed by a dense layer for output.
+- **GRU Model**: Composed of two GRU layers followed by a dense layer for output.
 
 #### Model Training and Evaluation
-- **Linear Regression Model**: The model is trained using an 80/20 train-test split.
-- **Evaluation Metrics**: Mean Absolute Error (MAE) and Root Mean Squared Error (RMSE) are used to measure the model's performance.
-- **Visualization**: The actual vs. predicted traffic flow is plotted for visual comparison.
+- The code trains the selected model (LSTM or GRU) using a defined sequence length.
+- Model evaluation metrics include Mean Absolute Error (MAE), Mean Squared Error (MSE), and R² Score.
+- The training process and results are logged to MLflow, and the model is saved locally.
+
+#### Logging and Experiment Tracking
+- **MLflow**: Used to track experiment parameters, metrics, and models.
+- **Logging**: Outputs training details to a `train.log` file for analysis.
 
 ### Deliverables
-- `model_experimentation.ipynb`: Jupyter notebook containing the code for data preprocessing, feature engineering, model training, evaluation, and visualization.
-- `kubeflow_logs.pdf`: Exported logs from Kubeflow tracking the experimentation process.
-- `model_comparison_report.pdf`: A report comparing the performance of the Linear Regression model with other models (to be updated later in the project).
+- `model_experimentation.ipynb`: Jupyter notebook containing code for data preprocessing, sequence creation, model training, and evaluation.
+- `train.log`: Log file detailing the training process.
+- `kubeflow_logs.pdf`: (To be added) Exported logs from Kubeflow tracking the experimentation process.
+- `model_comparison_report.pdf`: (To be added) Report comparing LSTM and GRU models.
 - `starter_notebook_phase_1.py`: Starter code for initializing the project.
 
 ### How to Run the Experiment
-1. **Data Preprocessing**: Run the feature creation function `create_features(location_index)` to generate features for each sensor location.
-2. **Model Training**: Use the `train_linear_model(df, location_index)` function to train and evaluate the Linear Regression model.
-3. **Visualization**: Visualize the results using the plotted graph of actual vs. predicted values.
+1. **Data Loading**: Run the `load_data()` function to load the METR-LA dataset.
+2. **Data Preprocessing**: Use the `preprocess_data(data)` function to normalize the dataset.
+3. **Sequence Creation**: Call the `create_sequences(data)` function to generate sequences for model training.
+4. **Model Training**: Use the `train_and_evaluate(model_type="LSTM")` function to train the model (LSTM or GRU).
+5. **Experiment Tracking**: View model performance metrics and logs using MLflow.
 
 ### Requirements
-- Python libraries: `pandas`, `numpy`, `matplotlib`, `scikit-learn`
-- METR-LA dataset preprocessed into the format provided in the pickle file `tra_Y_tr.pkl`
+- Python libraries: `numpy`, `pandas`, `scikit-learn`, `h5py`, `tensorflow`, `mlflow`, `matplotlib`
+- METR-LA dataset file: `metr-la.h5` located at `C:\foai\94879-starter-code-Team-Project\metr-la.h5`
 
 ### Instructions
 1. Open the Jupyter notebook `model_experimentation.ipynb`.
-2. Run the code cells sequentially to preprocess data, train models, and visualize results.
-3. Review the evaluation metrics (MAE and RMSE) and visualizations for model insights.
+2. Follow the instructions in the notebook to load data, preprocess it, create sequences, and train models.
+3. Monitor the model performance through MLflow tracking and review the log file `train.log` for detailed analysis.
